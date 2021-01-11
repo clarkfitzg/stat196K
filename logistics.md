@@ -63,6 +63,9 @@ https://aws.amazon.com/ec2/pricing/on-demand/
 > Data transferred between Amazon S3, Amazon Glacier, Amazon DynamoDB, Amazon SES, Amazon SQS, Amazon Kinesis, Amazon ECR, Amazon SNS or Amazon SimpleDB and Amazon EC2 instances in the same AWS Region is free.
 
 
+## AWS Batch
+
+
 ## FSx for Lustre
 
 Shared file system allows many to read simultaneously.
@@ -74,6 +77,10 @@ Lustre monthly costs:
 - $0.041 / GB
 
 Cheapest, and seems best suited to our use typical use cases.
+
+Minimum storage is 1.8 TB.
+Hmmm.
+Still, $74 / month is not that expensive.
 
 What's with the difference between baseline and burst throughput?
 They're more than two orders of magnitude different.
