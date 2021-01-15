@@ -69,6 +69,8 @@ sys     0m0.189s
 
 25 MB in about 1 second on the free machine.
 That seems excellent.
+Also, half this time is latency, not bandwidth.
+Downloading a single small file takes 0.66 seconds.
 
 In contrast, how long does it take from my local machine?
 
@@ -90,14 +92,55 @@ wget http://irs-form-990.s3.amazonaws.com/index_2011.csv  0.07s user 0.42s syste
 ```
 
 25 MB in 40 seconds over the internet to my local machine.
+29 seconds the next time.
+Still, much slower than EC2.
+
+Concepts:
+
+1. Amortize fixed overhead by processing data in batches.
+
+Ah, with this IRS tax data set these are just the index files.
+Here's the data:
+
+```
+aws s3 cp s3://irs-form-990/201101339349101810_public.xml .
+
+xmllint 201101339349101810_public.xml
+<?xml version="1.0" encoding="utf-8"?>
+<Return xmlns="http://www.irs.gov/efile" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" returnVersion="2010v3.2">
+  <ReturnHeader binaryAttachmentCount="0">
+    <Timestamp>2011-05-13T13:58:10-05:00</Timestamp>
+    <TaxPeriodEndDate>2010-12-31</TaxPeriodEndDate>
+    <PreparerFirm>
+      <PreparerFirmBusinessName>
+        <BusinessNameLine1>MOORE &amp; MOORE PC CPA'S</BusinessNameLine1>
+      </PreparerFirmBusinessName>
+      <PreparerFirmUSAddress>
+        <AddressLine1>16205 W 14 MILE</AddressLine1>
+        <City>BEVERLY HILLS</City>
+        <State>MI</State>
+        <ZIPCode>48025</ZIPCode>
+...
+```
+
+I believe this data is per nonprofit, per year.
+The data organization makes it easy to answer questions about one nonprofit- just find all the data that corresponds to that year.
+Similarly, some questions are very difficult, requiring one to scan ALL the data.
+
+This one takes a good long while:
+
+```
+aws s3 ls s3://irs-form-990 --human-readable --summarize | tail
+```
+
 
 
 
 ## AMI
 
-Need to set up an AMI for this class.
+Need to set up an AMI for this class with this software:
 
 - git
-- tmux
+- tmux- probably not necessary, if I use tmux locally?
 - julia or python
 - AWS CLI V2
