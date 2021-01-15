@@ -131,9 +131,27 @@ This one takes a good long while:
 
 ```
 aws s3 ls s3://irs-form-990 --human-readable --summarize | tail
+
+2018-01-20 00:55:48  143.6 MiB index_2017.json
+2019-05-03 18:48:03   55.5 MiB index_2018.csv
+2019-05-14 00:05:39  134.3 MiB index_2018.json
+2020-04-07 19:59:32   50.5 MiB index_2019.csv
+2019-12-12 23:48:58  116.6 MiB index_2019.json
+2020-11-19 17:04:24   36.3 MiB index_2020.csv
+2020-11-19 14:22:53   88.3 MiB index_2020.json
+
+Total Objects: 3415334
+   Total Size: 106.1 GiB
 ```
 
+106 GB, that will do.
 
+
+## S3
+
+Can run queries on data stored in S3 up to exabyte scale.
+
+Each object can be up to 5 TB in size.
 
 
 ## AMI
