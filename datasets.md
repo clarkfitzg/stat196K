@@ -1,6 +1,7 @@
-Mon Jan 11 09:25:17 PST 2021
-
 # Data
+
+The classroom accounts are in us-east-1, so I need to store my data there.
+Fortunately, 120/208 data sets are available here.
 
 Looking for:
 
@@ -15,6 +16,7 @@ Nice to have:
 - Freely, publicly available in S3 or other Amazon product.
     Then I don't have to pay for storage! :)
 - Ready statistical questions
+
 
 ## AWS Open Data
 

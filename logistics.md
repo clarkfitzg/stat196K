@@ -1,4 +1,5 @@
 
+
 AWS service requirements for STAT 196K
 
 Core experiences for students to have:
@@ -51,6 +52,7 @@ Also inefficient, because we won't be using them continuously.
 
 In contrast, Amazon Athena you pay *per query*.
 This is a far better pricing model for our purposes.
+Classroom accounts supports it.
 
 I need to find out if I can allow another user to 
 
