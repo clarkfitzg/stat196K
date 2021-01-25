@@ -40,3 +40,96 @@ Could ask some interesting questions:
 Arbitrarily large data set, very cool.
 
 [IRS nonprofit 990 forms](https://docs.opendata.aws/irs-990/readme.html) XML
+
+[First Street Foundation Flood risk](https://registry.opendata.aws/fsf-flood-risk/) CSV files.
+Certainly relevant to Sacramento with our significant flood risk.
+
+```
+~/projects/stat196K $ aws s3 ls s3://first-street-climate-risk-statistics-for-noncommercial-use/ --no-sign-request
+                           PRE v1.0/
+                           PRE v1.1/
+2020-10-06 09:42:25    5908731 FSF_Flood_Model_Technical_Documentation.pdf
+2020-09-18 08:53:03        285 LICENSE.txt
+```
+
+It looks to me like v1.1 are directories because of the trailing `/`.
+We want to find out what kind of data is in here.
+We could download and read the document `FSF_Flood_Model_Technical_Documentation.pdf`, or we could attempt to look inside the directories.
+Stepping back- we can read the manual, or we can attempt to figure it out for ourselves.
+Both are good ideas.
+
+First we need to figure out how to use `aws s3` by [reading the manual](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/ls.html).
+
+```
+~/projects/stat196K $ aws s3 ls s3://first-street-climate-risk-statistics-for-noncommercial-use/ --no-sign-request --recursive --human-readable
+2020-10-06 09:42:25    5.6 MiB FSF_Flood_Model_Technical_Documentation.pdf
+2020-09-18 08:53:03  285 Bytes LICENSE.txt
+2020-09-18 06:35:13    0 Bytes v1.0/
+2020-09-18 06:37:56   39.5 KiB v1.0/CongDist_level_risk_FEMA_FSF.csv
+2020-09-18 06:37:59  508.7 KiB v1.0/County_level_risk_FEMA_FSF.csv
+2020-09-18 06:37:54    1.6 KiB v1.0/First Street Aggregate Data Code Book - Congressional District.csv
+2020-09-18 06:37:55    2.0 KiB v1.0/First Street Aggregate Data Code Book - County.csv
+2020-09-18 06:37:54    2.0 KiB v1.0/First Street Aggregate Data Code Book - Zipcode.csv
+2020-09-18 06:37:54  285 Bytes v1.0/LICENSE.txt
+2020-09-18 06:38:03    4.0 MiB v1.0/Zip_level_risk_FEMA_FSF.csv
+2020-09-18 06:35:25    0 Bytes v1.1/
+2020-10-06 09:27:57   74.2 KiB v1.1/CongDist_level_risk_FEMA_FSF_v1.1.csv
+2020-10-06 09:27:58  456.7 KiB v1.1/County_level_risk_FEMA_FSF_v1.1.csv
+2020-10-06 09:40:32    1.7 KiB v1.1/FSF Aggregate Data CodeBook_v1.1.csv
+2020-10-06 09:13:35  285 Bytes v1.1/LICENSE.txt
+2020-10-06 09:27:56  906 Bytes v1.1/National_level_risk_FEMA_FSF_v1.1.csv
+2020-10-06 09:28:00    4.1 MiB v1.1/Zip_level_risk_FEMA_FSF_v1.1.csv
+```
+
+The largest file, besides the documentation, is `4.1 MiB v1.1/Zip_level_risk_FEMA_FSF_v1.1.csv`.
+Let's download it to our local machine and look at it.
+
+```
+aws s3 cp s3://first-street-climate-risk-statistics-for-noncommercial-use/v1.1/Zip_level_risk_FEMA_FSF_v1.1.csv . --no-sign-request
+download: s3://first-street-climate-risk-statistics-for-noncommercial-use/v1.1/Zip_level_risk_FEMA_FSF_v1.1.csv to ./Zip_level_risk_FEMA_FSF_v1.1.csv
+```
+
+This command has the form `cp file .`, which means to copy `file` to `.`, where `.` is our current local directory.
+
+Let's verify that we have the file locally:
+
+```
+~/projects/stat196K $ ls
+AWSCLIV2.pkg                     concepts.md                      schedule.md
+README.md                        datasets.md                      thoughts.md
+Zip_level_risk_FEMA_FSF_v1.1.csv logistics.md
+```
+
+
+Let's answer some basic EDA questions using the shell.
+Why use the shell for this?
+To prove how cool we are?
+
+Reasons to use the shell:
+
+1. The shell can interact with remote machines.
+    GUI's aren't always available; the shell is.
+    For us, the shell will be the __only__ way to interact with our machines.
+    By using it locally, we get relevant experience.
+2. The shell is more efficient and precise than GUI's.
+    For example, suppose you have 100 `.csv` files and 100 `.txt` files sitting in one directory, and you want to put the `.csv` files in one directory, and the `.txt` files in another.
+    This is trivial with the shell.
+3. We can easily automate commands in the shell by saving the commands in a file.
+4. The shell is stable.
+    For example, [`ls` has been listing files since 1971](https://linuxgazette.net/issue48/fischer.html).
+    Learn these tools, and they'll serve you for your whole career.
+3. Many programs have only a shell interface, for example, `aws s3`.
+4. The shell can compose programs with `|`, the pipe.
+    This idea makes the shell a powerful tool for processing raw text data, and we'll practice this technique in this class.
+5. The shell has much in common with other programs, particularly those with roots in UNIX.
+    When you use them all, there is a synergistic effect in your efficiency.
+    For example, what is the function to list objects in an environment in R?
+    `ls()`, from the UNIX `ls`.
+    There's also `rm`, `head`, `grep`, ... the list goes on :)
+
+What kind of file is this?
+
+```
+```
+
+
