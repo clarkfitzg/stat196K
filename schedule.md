@@ -9,8 +9,8 @@ For instance, selecting a subset of the data and downloading it to their local m
 How to structure the assignments / data sets in terms of increasing complexity?
 
 1. AWS essentials
-    1. install local aws client
     1. bash
+    1. install local aws client
     1. starting up a machine
     1. client-server, SSH
     1. text editing, configuration files, saving credentials to access S3
@@ -47,5 +47,3 @@ It's not clear to me how long the sessions on these EC2 instances will live for.
 My credentials to access S3 seem to disappear in an hour or two.
 It's going to be a problem if we have a program that runs for days.
 But there are ways around it- no point in worrying now.
-
-

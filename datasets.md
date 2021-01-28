@@ -105,28 +105,6 @@ Let's answer some basic EDA questions using the shell.
 Why use the shell for this?
 To prove how cool we are?
 
-Reasons to use the shell:
-
-1. The shell can interact with remote machines.
-    GUI's aren't always available; the shell is.
-    For us, the shell will be the __only__ way to interact with our machines.
-    By using it locally, we get relevant experience.
-2. The shell is more efficient and precise than GUI's.
-    For example, suppose you have 100 `.csv` files and 100 `.txt` files sitting in one directory, and you want to put the `.csv` files in one directory, and the `.txt` files in another.
-    This is trivial with the shell.
-3. We can easily automate commands in the shell by saving the commands in a file.
-4. The shell is stable.
-    For example, [`ls` has been listing files since 1971](https://linuxgazette.net/issue48/fischer.html).
-    Learn these tools, and they'll serve you for your whole career.
-3. Many programs have only a shell interface, for example, `aws s3`.
-4. The shell can compose programs with `|`, the pipe.
-    This idea makes the shell a powerful tool for processing raw text data, and we'll practice this technique in this class.
-5. The shell has much in common with other programs, particularly those with roots in UNIX.
-    When you use them all, there is a synergistic effect in your efficiency.
-    For example, what is the function to list objects in an environment in R?
-    `ls()`, from the UNIX `ls`.
-    There's also `rm`, `head`, `grep`, ... the list goes on :)
-
 What kind of file is this?
 
 ```
