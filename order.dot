@@ -1,0 +1,17 @@
+digraph {
+rankdir = LR;
+
+// assignments
+
+large_text_files
+nested_data
+database
+images
+simulation
+
+// skills
+
+shell_intro
+ssh
+
+}
