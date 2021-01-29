@@ -97,3 +97,42 @@ sudo yum install julia
 
 This is enough to save an Amazon Machine Image (AMI) for now.
 I'll update it later with some of my configuration.
+
+I've saved it, and updated visibility to Public.
+Now lets check if I can access it as a student from AWS Educate.
+
+I found the AMI as a student and started a machine.
+
+Still cannot seem to use the web browser to access the shell, which is quite unfortunate.
+
+
+```
+chmod 400 key-2021-02-28-2.pem
+ssh -i "key-2021-02-28-2.pem" root@ec2-35-170-53-159.compute-1.amazonaws.com
+
+# Please login as the user "ec2-user" rather than the user "root".
+# 
+# Connection to ec2-35-170-53-159.compute-1.amazonaws.com closed.
+```
+
+Doesn't like me trying to login as `root`, fair enough.
+
+```
+ssh -i "key-2021-02-28-2.pem" ec2-user@ec2-35-170-53-159.compute-1.amazonaws.com
+```
+
+Works fine. I'm in, and I see the software that I need.
+Sweet!
+
+I also see all my historical commands in `.bash_history`.
+Nothing in my `.aws` credentials or config, that's good.
+Better be careful to keep it that way!
+
+I can log out completely from everything in the web browser, leave my instance running, and still keep accessing it from SSH.
+
+Amazon Elastic file storage (EFS) seems to require a virtual private cloud (VPC), at least for the basic tutorials.
+I have no need for the VPC.
+The only advantage to treating something like a file system is convenience.
+We're already working with S3 through the publicly available data sets.
+It makes sense to stick with S3 for the other stuff that we do.
+The other good thing about S3 is that it seems to integrate better with Amazon cloud native tools, like the database stuff.
