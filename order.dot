@@ -1,17 +1,56 @@
 digraph {
 rankdir = LR;
+labelloc="t";
+label="Dependencies Between Computing Concepts and Assignments";
 
 // assignments
+node [shape = rectangle]
+large_text_files [label = "large text\nfiles"]
+nested_data [label = "nested data"]
+database [label = "relational\ndatabases"]
+images [label = "images"]
+simulation [label = "simulation"]
 
-large_text_files
-nested_data
-database
-images
-simulation
+// tech skills
+node [shape = none]
+shell_intro [label = "shell intro\n(bash)"]
+shell_advanced [label = "data processing\n\pipelines (bash)"]
+ssh [label = "servers\n(SSH)"]
+git [label = "version control\n(git)"]
+profiling
+parallel [label = "parallel\nprogramming"]
+ec2 [label = "cloud computing\nintro (EC2)"]
+sql [label = "SQL"]
+s3 [label = "object store\n(S3)"]
+programming [label = "programming\n(Julia, R\n or Python)"]
 
-// skills
+// hard dependencies
+shell_intro -> ssh
+shell_intro -> git
+shell_intro -> shell_advanced
+shell_advanced -> large_text_files
+ec2 -> ssh
+ssh -> git
+sql -> database
+s3 -> large_text_files
+s3 -> nested_data
+s3 -> images
+ssh -> large_text_files
+ssh -> nested_data
+ssh -> images
+ssh -> database
+programming -> nested_data
+programming -> profiling
+programming -> images
+programming -> simulation
 
-shell_intro
-ssh
+
+// soft dependencies
+edge [style = dashed]
+parallel -> simulation
+parallel -> nested_data
+profiling -> parallel
+large_text_files -> nested_data
+ssh -> simulation
 
 }
