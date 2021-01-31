@@ -5,7 +5,7 @@ fontsize = 20;
 label="Relationship Between Concepts and Assignments";
 
 // assignments
-node [shape = rectangle, style = filled]
+node [shape = square, style = filled]
 large_text_files [label = "large text\nfiles"]
 nested_data [label = "nested data"]
 database [label = "relational\ndatabases"]
@@ -13,6 +13,7 @@ images [label = "images"]
 simulation [label = "simulation", fontcolor = blue]
 
 // tech skills
+//node [shape = rectangle, style = unfilled]
 node [shape = none, style = unfilled]
 shell_basics [label = "shell basics\n(bash)"]
 shell_advanced [label = "data processing\n\pipelines (bash)"]
@@ -54,6 +55,7 @@ edge [style = dashed]
 large_text_files -> nested_data
 parallel -> simulation
 parallel -> nested_data
+//parallel -> images
 profiling -> parallel
 programming -> xml
 regex -> nested_data
@@ -65,10 +67,8 @@ ssh -> git
 // statistical ideas
 node [shape = oval, color = blue, fontcolor = blue]
 sampling
-bootstrap
 visualization
 ml [label = "regression /\nmachine learning"]
-nlp [label = "natural language\nprocessing"]
 grouped [label = "grouped data"]
 estimation [label = "parameter\nestimation"]
 dim_reduce [label = "dimension\nreduction"]
@@ -78,22 +78,20 @@ online_algo [label = "online\nalgorithms"]
 // statistics optional connections
 edge [color = blue, dir = none]
 large_text_files -> grouped
-large_text_files -> nlp
-nested_data -> grouped
+large_text_files -> estimation
+nested_data -> ml
 nested_data -> sampling
 nested_data -> online_algo
-nested_data -> nlp
-database -> nlp
-simulation -> bootstrap
+nested_data -> dim_reduce
 simulation -> visualization
 
 // statistics
 edge [style = solid]
 large_text_files -> sampling
 large_text_files -> online_algo
-large_text_files -> estimation
 large_text_files -> visualization
 nested_data -> visualization
+nested_data -> grouped
 simulation -> estimation
 simulation -> conf_interval
 images -> ml
