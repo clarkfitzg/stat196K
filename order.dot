@@ -2,7 +2,7 @@ digraph {
 rankdir = LR;
 labelloc="t";
 fontsize = 20;
-label="Dependencies Between Computing Concepts and Assignments";
+label="Relationship Between Concepts and Assignments";
 
 // assignments
 node [shape = rectangle, style = filled]
@@ -10,7 +10,7 @@ large_text_files [label = "large text\nfiles"]
 nested_data [label = "nested data"]
 database [label = "relational\ndatabases"]
 images [label = "images"]
-simulation [label = "simulation"]
+simulation [label = "simulation", fontcolor = blue]
 
 // tech skills
 node [shape = none, style = unfilled]
@@ -24,6 +24,15 @@ ec2 [label = "cloud computing\nbasics (EC2)"]
 sql [label = "SQL"]
 s3 [label = "object store\n(S3)"]
 programming [label = "programming\n(Julia, R\n or Python)"]
+
+// statistical ideas
+node [shape = none, fontcolor = blue]
+sampling
+bootstrap
+ml [label = "regression /\nmachine learning"]
+grouped [label = "grouped data"]
+estimation [label = "parameter\nestimation"]
+dim_reduce [label = "dimension\nreduction"]
 
 // hard dependencies
 shell_basics -> ssh
@@ -44,7 +53,6 @@ programming -> profiling
 programming -> images
 programming -> simulation
 
-
 // soft dependencies
 edge [style = dashed]
 parallel -> simulation
@@ -54,4 +62,17 @@ large_text_files -> nested_data
 ssh -> simulation
 ssh -> git
 
+// statistics
+edge [style = solid, color = blue, dir = none]
+large_text_files -> sampling
+nested_data -> sampling
+nested_data -> grouped
+large_text_files -> grouped
+large_text_files -> estimation
+simulation -> bootstrap
+simulation -> estimation
+images -> ml
+images -> dim_reduce
+database -> grouped
+database -> estimation
 }
