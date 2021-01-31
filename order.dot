@@ -24,20 +24,14 @@ ec2 [label = "cloud computing\nbasics (EC2)"]
 sql [label = "SQL"]
 s3 [label = "object store\n(S3)"]
 programming [label = "programming\n(Julia, R\n or Python)"]
-
-// statistical ideas
-node [shape = none, fontcolor = blue]
-sampling
-bootstrap
-ml [label = "regression /\nmachine learning"]
-grouped [label = "grouped data"]
-estimation [label = "parameter\nestimation"]
-dim_reduce [label = "dimension\nreduction"]
+xml [label = "hierarchical\ndata (XML)"]
+regex [label = "regular\nexpressions"]
 
 // hard dependencies
 shell_basics -> ssh
 shell_basics -> git
 shell_basics -> shell_advanced
+shell_basics -> s3
 shell_advanced -> large_text_files
 ec2 -> ssh
 sql -> database
@@ -52,25 +46,56 @@ programming -> nested_data
 programming -> profiling
 programming -> images
 programming -> simulation
+xml -> nested_data
+
 
 // soft dependencies
 edge [style = dashed]
+large_text_files -> nested_data
 parallel -> simulation
 parallel -> nested_data
 profiling -> parallel
-large_text_files -> nested_data
+programming -> xml
+regex -> nested_data
+regex -> large_text_files
+regex -> database
 ssh -> simulation
 ssh -> git
 
-// statistics
-edge [style = solid, color = blue, dir = none]
-large_text_files -> sampling
-nested_data -> sampling
-nested_data -> grouped
+// statistical ideas
+node [shape = oval, color = blue, fontcolor = blue]
+sampling
+bootstrap
+visualization
+ml [label = "regression /\nmachine learning"]
+nlp [label = "natural language\nprocessing"]
+grouped [label = "grouped data"]
+estimation [label = "parameter\nestimation"]
+dim_reduce [label = "dimension\nreduction"]
+conf_interval [label = "confidence\nintervals"]
+online_algo [label = "online\nalgorithms"]
+
+// statistics optional connections
+edge [color = blue, dir = none]
 large_text_files -> grouped
-large_text_files -> estimation
+large_text_files -> nlp
+nested_data -> grouped
+nested_data -> sampling
+nested_data -> online_algo
+nested_data -> nlp
+database -> nlp
 simulation -> bootstrap
+simulation -> visualization
+
+// statistics
+edge [style = solid]
+large_text_files -> sampling
+large_text_files -> online_algo
+large_text_files -> estimation
+large_text_files -> visualization
+nested_data -> visualization
 simulation -> estimation
+simulation -> conf_interval
 images -> ml
 images -> dim_reduce
 database -> grouped
