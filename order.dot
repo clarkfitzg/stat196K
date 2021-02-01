@@ -13,7 +13,6 @@ images [label = "images"]
 simulation [label = "simulation", fontcolor = blue]
 
 // tech skills
-//node [shape = rectangle, style = unfilled]
 node [shape = none, style = unfilled]
 shell_basics [label = "shell basics\n(bash)"]
 shell_advanced [label = "data processing\n\pipelines (bash)"]
