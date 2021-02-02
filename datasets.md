@@ -117,3 +117,216 @@ USDA food database
 https://fdc.nal.usda.gov/download-datasets.html
 
 This looks to be a good one for introducing databases / relational joins.
+
+---
+
+How about some genomic data?
+
+https://registry.opendata.aws/broad-pan-ukb/
+
+```
+aws s3 ls --no-sign-request --summarize --human-readable s3://pan-ukb-us-east-1/
+
+aws s3 ls --no-sign-request --summarize --human-readable --recursive s3://pan-ukb-us-east-1/sumstats_flat_files/
+```
+
+6.6 TiB! Whoa that's big enough :)
+
+Let's look at one of them, a 2 GB file.
+
+```
+time aws s3 cp --no-sign-request s3://pan-ukb-us-east-1/sumstats_flat_files/prescriptions-zopiclone-both_sexes.tsv.bgz .
+```
+
+37 seconds- fast!
+
+take a peek:
+
+```
+
+gzip -l prescriptions-zopiclone-both_sexes.tsv.bgz 
+
+gzip -cd prescriptions-zopiclone-both_sexes.tsv.bgz | head > zopiclone_example.tsv
+
+cut -c-80 zopiclone_example.tsv
+
+```
+
+I have no idea what any of this is, but it looks like the columns correspond to ethnicity.
+Ah here: https://pan.ukbb.broadinstitute.org/docs/per-phenotype-files#per-phenotype-files
+
+Really could use a biologist to help out with understanding these.
+I'm not even sure what questions we would ask.
+
+------------------------------------------------------------
+
+Global Database of Events, Language and Tone 
+
+Very cool! https://www.gdeltproject.org/
+
+https://registry.opendata.aws/gdelt/
+
+```
+
+# Lots of stuff here
+aws s3 ls --no-sign-request --summarize --human-readable s3://gdelt-open-data/v2/events/
+
+# arbitrary day
+aws s3 cp --no-sign-request s3://gdelt-open-data/v2/events/20151214143000.export.csv .
+```
+
+Looking promising, let's try some Julia.
+
+
+```
+using CSV
+using DataFrames
+
+df = CSV.File(20151214143000.export.csv) |> DataFrame
+```
+
+
+Wow, precompiling DataFrames takes a long time, and then fails with this message:
+
+```
+julia> using DataFrames
+[ Info: Precompiling DataFrames [a93c6f00-e57d-5684-b7b6-d8193f3e46c0]
+ERROR: Failed to precompile DataFrames [a93c6f00-e57d-5684-b7b6-d8193f3e46c0] to /home/ec2-user/.julia/compiled/v1.5/DataFrames/AR9oZ_vFGwo.ji.
+Stacktrace:
+ [1] compilecache(::Base.PkgId, ::String) at ./loading.jl:1305
+ [2] _require(::Base.PkgId) at ./loading.jl:1030
+ [3] require(::Base.PkgId) at ./loading.jl:928
+ [4] require(::Module, ::Symbol) at ./loading.jl:923
+ [5] run_repl(::REPL.AbstractREPL, ::Any) at /builddir/build/BUILD/julia/build/usr/share/julia/stdlib/v1.5/REPL/src/REPL.jl:288
+```
+
+In a fresh session it still fails.
+
+```
+[ec2-user@ip-172-31-90-114 ~]$ julia
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.5.3 (2020-11-09)
+ _/ |\__'_|_|_|\__'_|  |  nalimilan/julia Copr build
+|__/                   |
+
+julia> @time using DataFrames
+[ Info: Precompiling DataFrames [a93c6f00-e57d-5684-b7b6-d8193f3e46c0]
+ERROR: Failed to precompile DataFrames [a93c6f00-e57d-5684-b7b6-d8193f3e46c0] to /home/ec2-user/.julia/compiled/v1.5/DataFrames/AR9oZ_vFGwo.ji.
+Stacktrace:
+ [1] top-level scope at timing.jl:174
+ [2] run_repl(::REPL.AbstractREPL, ::Any) at /builddir/build/BUILD/julia/build/usr/share/julia/stdlib/v1.5/REPL/src/REPL.jl:288
+```
+
+
+Could be an issue with the minimal resources, only 1 vCPU and 1 GB memory.
+
+```
+df = CSV.File("20151214143000.export.csv", header = false)
+```
+
+This isn't really what I want, think I need DataFrames.
+Switching back to R now.
+
+```
+d = read.table("20151214143000.export.csv", sep = "\t", nrow = 170)
+
+
+d[1:10, 45:61]
+
+sapply(d, class)
+```
+
+This looks like the dataset for us. 😎
+
+```
+
+aws s3 ls --no-sign-request --summarize --human-readable s3://gdelt-open-data/v2/
+
+```
+
+`events` looks like the most readily accessible table.
+Docs: http://data.gdeltproject.org/documentation/GDELT-Event_Codebook-V2.0.pdf
+
+
+> GDELT Event records are stored in an expanded version of the dyadic CAMEO format,
+capturing two actors and the action performed by Actor1 upon Actor2. A wide array of variables break
+out the raw CAMEO actor codes into their respective fields to make it easier to interact with the data, 
+
+Docs are easier to read from Google Bigquery: https://console.cloud.google.com/bigquery?p=gdelt-bq&d=gdeltv2&page=table&project=root-clover-288717&t=events
+
+```
+SELECT * FROM `gdelt-bq.gdeltv2.events` LIMIT 100
+```
+
+Some interesting looking columns:
+
+CameoCode http://data.gdeltproject.org/documentation/CAMEO.Manual.1.1b3.pdf
+
+code events according to three levels of detail.
+Here's one example:
+
+> CAMEO 015
+> Name Acknowledge or claim responsibility
+> Description Non-apologetically claim responsibility, admit an error or wrongdoing, or
+> retract a statement without expression of remorse.
+> Usage Notes This event form is a verbal act. Remorseful acknowledgements should be
+> coded as ‘Apologize’ (055) instead.
+> Example A Damascus-based Palestinian guerrilla group claimed responsibility on Saturday for attacks on Israeli troops from Jordan in the past two days.
+
+Some numeric columns:
+
+> GoldsteinScale. (floating point) Each CAMEO event code is assigned a numeric score from -10 to
+> +10, capturing the theoretical potential impact that type of event will have on the stability of a
+> country. This is known as the Goldstein Scale. This field specifies the Goldstein score for each
+> event type. NOTE: this score is based on the type of event, not the specifics of the actual event
+> record being recorded – thus two riots, one with 10 people and one with 10,000, will both
+> receive the same Goldstein score. This can be aggregated to various levels of time resolution to
+> yield an approximation of the stability of a location over time.
+
+> AvgTone. (numeric) This is the average “tone” of all documents containing one or more
+> mentions of this event during the 15 minute update in which it was first seen. The score
+> ranges from -100 (extremely negative) to +100 (extremely positive). Common values range
+> between -10 and +10, with 0 indicating neutral. This can be used as a method of filtering the
+> “context” of events as a subtle measure of the importance of an event and as a proxy for the
+> “impact” of that event. For example, a riot event with a slightly negative average tone is likely
+> to have been a minor occurrence, whereas if it had an extremely negative average tone, it
+> suggests a far more serious occurrence. 
+
+Kinds of questions we could do:
+
+1. Count up events of interest- location or type of event.
+1. Create a histogram of one of these numeric columns.
+1. How many data files are here?
+2. What time period does this data cover?
+
+Other requirements:
+
+1. Read the documentation, figure out what some of these things mean.
+1. Process more data than your 8 GB of hard drive.
+
+Can we download files according to time?
+
+```
+# Nope!
+# aws s3 ls --no-sign-request --summarize --human-readable s3://gdelt-open-data/v2/events/2015*
+```
+
+[Dirty hack](https://github.com/aws/aws-cli/issues/3784#issuecomment-607811701)
+
+```
+aws s3 sync --no-sign-request --dryrun --exclude '*' --include '2015*' s3://gdelt-open-data/v2/events/ ./
+```
+
+I believe each file corresponds to 15 minutes.
+So `"20151214143000.export.csv"` is December 14, 2015 at 2:30 PM.
+
+- 2015 year
+- 12 month
+- 14 day
+- 14 hour
+- 30 minutes
+- 00 seconds
