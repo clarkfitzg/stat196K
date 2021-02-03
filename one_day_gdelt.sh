@@ -9,7 +9,7 @@ mkdir ${DATE}
 aws s3 sync s3://gdelt-open-data/v2/events/ ${DATE} --exclude "*" --include "${DATE}*"
 
 # Put them all in one object and streaming upload from standard input
-cat ${DATE}/* | aws s3 cp - s3://${BUCKET}
+cat ${DATE}/* | aws s3 cp - s3://${BUCKET}/${DATE}.csv
 
 # clean up
 rm -r $DATE
