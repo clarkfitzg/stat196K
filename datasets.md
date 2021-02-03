@@ -296,7 +296,9 @@ Some numeric columns:
 > to have been a minor occurrence, whereas if it had an extremely negative average tone, it
 > suggests a far more serious occurrence. 
 
-Kinds of questions we could do:
+It would be cool to ask two kinds of questions- one that we could easily verify the solution to with Google bigquery, and one that a database cannot easily do.
+
+Example questions:
 
 1. Count up events of interest- location or type of event.
 1. Create a histogram of one of these numeric columns.
@@ -330,3 +332,93 @@ So `"20151214143000.export.csv"` is December 14, 2015 at 2:30 PM.
 - 14 hour
 - 30 minutes
 - 00 seconds
+
+------------------------------------------------------------
+
+Setting up an exercise from here.
+I want to concatenate enough of these files to get a file that is around 100 MB.
+A single day should get me `4*24 = 96` files, each of which is approximately between 0.5 and 1 MB.
+
+Let's try it.
+Looks like the [last update was April 2019](https://github.com/awslabs/open-data-registry/issues/292), no problem for us.
+The data set appears to start in 
+
+Following https://stackoverflow.com/questions/38834708/how-can-i-use-wildcards-to-cp-a-group-of-files-with-the-aws-cli
+
+```
+
+aws s3 ls --no-sign-request --summarize --human-readable s3://gdelt-open-data/v2/events/
+
+time aws s3 cp s3://gdelt-open-data/v2/events/ ./ --exclude "*" --include "20190301" --no-sign-request --dryrun 
+# Fails, Key "v2/events/" does not exist
+
+time aws s3 cp s3://gdelt-open-data/ ./ --exclude "*" --include "v2/events/20190301" --no-sign-request --dryrun 
+# prints nothing :/
+# Aw shoot, forgot *
+
+time aws s3 cp s3://gdelt-open-data/ ./ --exclude "*" --include "v2/events/20190301*" --no-sign-request --dryrun 
+# still nothing
+
+# Wait- do I need two *'s?
+
+# Maybe it's this --dryrun flag.
+aws s3 cp s3://gdelt-open-data/ ./ --exclude "*" --include "v2/events/20150322*" --no-sign-request --dryrun 
+```
+
+Let's try again using `sync`.
+Following: https://stackoverflow.com/questions/55603194/awscli-s3-sync-wildcards
+
+```
+aws s3 sync s3://gdelt-open-data/v2/events/ events/ --exclude "*" --include "*20150322*" --no-sign-request --dryrun 
+```
+
+Aw yeah, I think we're getting closer now.
+Let me try again to pick a later date.
+This is two years ago.
+
+```
+aws s3 sync s3://gdelt-open-data/v2/events/ events/ --exclude "*" --include "20190203*" --no-sign-request --dryrun 
+```
+
+This runs, but it's quite slow.
+Seems like it's spending most of the time trying to find the files.
+Must be those wildcards that are throwing things off.
+It might make sense for me to copy everything and have it ready to go in a bucket so they don't have to deal with this.
+
+
+Reading the documentation- a cool idea would be to have them process the data right from `stdin` and `stdout`.
+
+For real now:
+
+```
+time aws s3 sync s3://gdelt-open-data/v2/events/ events/ --exclude "*" --include "20190203*" --no-sign-request
+
+...
+download: s3://gdelt-open-data/v2/events/20190203211500.export.csv to events/20190203211500.export.csv
+download: s3://gdelt-open-data/v2/events/20190203234500.export.csv to events/20190203234500.export.csv
+
+
+real    1m28.820s
+user    1m16.174s
+sys     0m1.211s
+```
+
+So 40M in events.
+
+Let's put them all together into one day.
+
+```
+
+cat events/* > 20190203.csv
+
+```
+
+Now upload `20190203.csv` into my bucket.
+
+```
+
+aws s3 cp 20190203.csv s3://stat196k-data-examples
+
+```
+
+
