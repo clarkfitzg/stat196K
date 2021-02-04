@@ -1,4 +1,10 @@
 
+Next week:
+
+- Monday: shell pipelines
+- Wednesday: performance monitoring, tmux?
+- Friday: ? stat concept- maybe reservoir sampling?
+
 Streaming `gzip`.
 
 ```
