@@ -68,3 +68,6 @@ aws s3 cp $bucket - --exclude "*" --include "*.txt" --recursive
 
 # My goal with this first assignment is for students to process a stream that's larger than memory, and ideally larger than storage.
 # I can accomplish that goal by creating a file in S3 that's as large as I like.
+# I'll do that from an instance with more than 8 GB storage.
+# Happily, the script I already wrote should do that: combine_gdelt_files.sh
+#
