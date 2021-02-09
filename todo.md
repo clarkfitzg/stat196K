@@ -1,3 +1,4 @@
+One idea 
 
 Next week:
 
