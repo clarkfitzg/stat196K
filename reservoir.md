@@ -12,3 +12,12 @@ Plot some QQ plots to verify that the distribution looks as you expect.
 Idea: This could be a good lead in to parallel programming.
 Simulations are the easiest things to parallelize.
     
+3. Which of these will produce a simple random sample?
+
+```
+head data.txt | reservoir_sample
+reservoir_sample data.txt | head
+```
+
+4. Wikipedia claims simple reservoir sampling is slow.
+Is it?

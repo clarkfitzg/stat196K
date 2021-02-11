@@ -1,5 +1,7 @@
 One idea 
 
+- executable files
+
 Next week:
 
 - Monday: shell pipelines
