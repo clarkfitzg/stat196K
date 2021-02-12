@@ -1,3 +1,7 @@
+Skill: make a command line program in julia implementing the same program as `seq` from GNU bash.
+
+
+Making our own version of `shuf`.
 
 Idea: come up with a reservoir sampling scheme that doesn't take longer than a fixed amount of time, meaning it stops once a certain amount of time has passed.
 
@@ -19,5 +23,28 @@ head data.txt | reservoir_sample
 reservoir_sample data.txt | head
 ```
 
+Test your classmate's code and verify that it works in the following cases:
+
+1. input data with 0 lines
+2. input data with 5 lines
+2. input data with 20 lines
+1. input file specified and empty (stdin)
+
+1. If your input data has fewer than the number of samples, then write an informative message to standard error.
+
+Harder:
+
 4. Wikipedia claims simple reservoir sampling is slow.
 Is it?
+Check by implementing another algorithm and comparing speeds.
+5. Make sure your program works for arbitrarily large input.
+    Hint: you need to handle more points than this:
+```
+julia> typemax(Int)
+9223372036854775807
+```
+How long must your program run before something like this matters?
+
+
+
+
