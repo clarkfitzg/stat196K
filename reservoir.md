@@ -34,6 +34,7 @@ Test your classmate's code and verify that it works in the following cases:
 
 Harder:
 
+1. Generalize your program through a function that works on any iterable data in Julia, rather than only `stdin`.
 4. Wikipedia claims simple reservoir sampling is slow.
 Is it?
 Check by implementing another algorithm and comparing speeds.
