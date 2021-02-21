@@ -11,7 +11,7 @@ Why do we want to do this?
 - We already have code in Julia to do the [QQ plot](https://github.com/JuliaPlots/StatsPlots.jl#quantile-quantile-plots)
 
 ```julia
-using GR
+import GR
 using Distributions
 ```
 
@@ -37,6 +37,26 @@ If we plot the sorted data against these theoretical quantiles, we should see li
 
 ```julia
 q1k = quantile(U1k, range(0, 1, length = length(x)))
-scatter(q1k, sort(x))
+GR.scatter(q1k, sort(x))
+# add a line over
+#rx = [minimum(x), maximum(x)]
+#GR.oplot(rx, rx)
+```
+
+This is the case when the best case scenario.
+
+Let's try this on another distribution
+
+```julia
+function qqplot(d::UnivariateDistribution, x)
+    q = quantile(d, range(0, 1, length = length(x)))
+    GR.scatter(q, sort(x))
+end
+
+qqplot(U1k, x)
+
+normalD = Normal(mean(x), std(x))
+
+qqplot(
 ```
 
