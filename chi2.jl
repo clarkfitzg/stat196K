@@ -23,20 +23,20 @@ x = rand(U1k, 50)
 # evenly spaced quantiles
 q1k = quantile(U1k, range(0, 1, length = length(x)))
 
-scatter(q1k, sort(x))
 title("data comes from distribution - GOOD")
+scatter(q1k, sort(x))
 
-plot(q1k, sort(x))
 function qqplot(d::UnivariateDistribution, x)
     rng = range(0, 1, length = length(x) + 2)[2:(end-1)]
     q = quantile(d, rng)
     GR.scatter(q, sort(x))
 end
 
-title("data not from distribution - BAD")
+# Check that our function works
 qqplot(U1k, x)
 
 normalD = Normal(mean(x), std(x))
 
+title("data not from distribution - BAD")
 qqplot(normalD, x)
 

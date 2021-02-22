@@ -1,5 +1,8 @@
 Skill: make a command line program in julia implementing the same program as `seq` from GNU bash.
 
+Resources:
+
+- [chi-square test](https://www.itl.nist.gov/div898/handbook/eda/section3/eda35f.htm) National Institute of Standards and Technology (NIST)
 
 Making our own version of `shuf`.
 
