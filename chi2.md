@@ -11,8 +11,11 @@ Why do we want to do this?
 - We already have code in Julia to do the [QQ plot](https://github.com/JuliaPlots/StatsPlots.jl#quantile-quantile-plots)
 
 ```julia
-import GR
+using Plots
 using Distributions
+
+# Initialize plotting
+gr()
 ```
 
 The QQ (quantile - quantile) plot is a useful visual tool to check if whether a particular distribution models data well.
@@ -38,7 +41,8 @@ If we plot the sorted data against these theoretical quantiles, we should see li
 ```julia
 GR.title("data comes from distribution - GOOD")
 q1k = quantile(U1k, range(0, 1, length = length(x)))
-GR.scatter(q1k, sort(x))
+#GR.scatter(q1k, sort(x))
+plot(q1k, sort(x))
 ```
 
 This is the best case scenario.
