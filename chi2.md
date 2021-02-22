@@ -36,27 +36,38 @@ quantile(U1k, 0.5)
 If we plot the sorted data against these theoretical quantiles, we should see line along y = x.
 
 ```julia
+GR.title("data comes from distribution - GOOD")
 q1k = quantile(U1k, range(0, 1, length = length(x)))
 GR.scatter(q1k, sort(x))
-# add a line over
-#rx = [minimum(x), maximum(x)]
-#GR.oplot(rx, rx)
 ```
 
-This is the case when the best case scenario.
+This is the best case scenario.
 
-Let's try this on another distribution
+Let's try this on a distribution that we know is wrong.
 
 ```julia
 function qqplot(d::UnivariateDistribution, x)
-    q = quantile(d, range(0, 1, length = length(x)))
+    rng = range(0, 1, length = length(x) + 2)[2:(end-1)]
+    q = quantile(d, rng)
     GR.scatter(q, sort(x))
 end
 
+GR.title("data not from distribution - BAD")
 qqplot(U1k, x)
 
 normalD = Normal(mean(x), std(x))
 
-qqplot(
+qqplot(normalD, x)
 ```
 
+How about sampling data that looks __too good__?
+
+## Exercise
+
+Pick two statistical distributions that look completely different.
+For example, the uniform distribution looks different from the 
+Turn in two images:
+
+- a qqplot
+
+Use any software you like
