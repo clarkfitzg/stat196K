@@ -3,6 +3,8 @@
 using Plots
 using Distributions
 
+import GR
+
 # Initialize plotting
 gr()
 
