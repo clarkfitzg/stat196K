@@ -1,42 +1,68 @@
-# Simulate data and make QQ plots
+#construction
 
 using Distributions
-# Plotting package that works over ssh with X11
-using GR 
+using StatsPlots
 
-# sanity check to see if plotting works
-scatter(1:3, 1:3)
+nmax = 1e6
+
+# Discrete uniform random variable
+U = DiscreteUniform(1, nmax)
+
+nsample = 100
+
+# Random sample
+x = rand(U, nsample)
+
+# should appear somewhat flat
+histogram(x)
+
+expected_bin_count = 10
+
+# calculated based on what we already specified
+nbins = Int(floor(nsample / expected_bin_count))
+
+# Basing histogram breaks on the quantiles helps this code generalize
+q = range(0, 1, length = nbins + 1)
+q = collect(q)
+breaks = quantile(U, q)
 
 
-# Not working reliably yet:
-#using Plots
-
-
-
-
-# U1k represents a uniform(0, 1000) distribution
-U1k = Uniform(0, 1000)
-
-# A random sample from this distribution
-x = rand(U1k, 50)
-
-# evenly spaced quantiles
-q1k = quantile(U1k, range(0, 1, length = length(x)))
-
-title("data comes from distribution - GOOD")
-scatter(q1k, sort(x))
-
-function qqplot(d::UnivariateDistribution, x)
-    rng = range(0, 1, length = length(x) + 2)[2:(end-1)]
-    q = quantile(d, rng)
-    GR.scatter(q, sort(x))
+# This implementation is higher level and prettier to me.
+function table(x, breaks)
+    K = length(breaks)-1
+    counts = zeros(Int, K)
+    for i in 1:K
+        counts[i] = sum(breaks[i] .< x .<= breaks[i+1])
+    end
+    counts
 end
 
-# Check that our function works
-qqplot(U1k, x)
 
-normalD = Normal(mean(x), std(x))
+# This implementation is more algorithmic and harder to read.
+function table_ugly(x, breaks)
+    counts = zeros(Int, length(breaks)-1)
+    for xi in x
+        bin = 0
+        for b in breaks
+            if xi < b
+                counts[bin] += 1
+                break
+            end
+            bin += 1
+        end
+    end
+    counts
+end
 
-title("data not from distribution - BAD")
-qqplot(normalD, x)
+
+# Another approach
+# x_binned = CategoricalArrays.cut(x, breaks)
+
+
+x_counts = table(x, breaks)
+
+# Based on the way we constructed 
+expected_counts = 
+
+
 
