@@ -79,3 +79,40 @@ pval_check = HypothesisTests.pvalue(expected, tail = :both)
 
 # These numbers should be the same up to numerical precision, 1e-16 or so.
 abs(pval - pval_check)
+
+
+#############################################################
+# Interesting question- does the `chi_stat` we calculated above ACTUALLY follow a Chi squared distribution?
+# We can prove that it's true as the number of data points goes to infinity, but it's useful to verify that result with simulation.
+# The best way to do that is to wrap up our code above into a function that we can call many times to simulate.
+#############################################################
+
+"""
+    Simulate a single observation of Pearson's Chi squared statistic
+
+    `Xrv` is any UnivariateDistribution
+"""
+function simulate_chi2(Xrv = DiscreteUniform(1, nmax), nsample = 100, expected_bin_count = 10)
+    
+    nbins = Int(floor(nsample / expected_bin_count))
+
+    q = range(0, 1, length = nbins + 1)
+    q = collect(q)
+    breaks = quantile(Xrv, q)
+
+    x = rand(Xrv, nsample)
+    x_counts = table(x, breaks)
+    expected_counts = fill(expected_bin_count, length(x_counts))
+    chi_stat = sum((x_counts - expected_counts).^2 ./ expected_counts)
+end
+
+
+s = [simulate_chi2() for i in 1:200]
+
+# s should look like a Chi Square distribution with expected_bin_count -1 degrees of freedom
+histogram(s)
+
+# We observe some departure from the Chi Square distribution for numbers higher than 15 or so.
+qqplot(s, Chisq(9))
+xlabel!("quantiles for Chi Square distribution with 9 degrees of freedom")
+ylabel!("quantiles of simulated statistics")
