@@ -92,7 +92,7 @@ abs(pval - pval_check)
 
     `Xrv` is any UnivariateDistribution
 """
-function simulate_chi2(Xrv = DiscreteUniform(1, nmax), nsample = 100, expected_bin_count = 10)
+function simulate_chi2(Xrv = DiscreteUniform(1, 1e6), nsample = 100, expected_bin_count = 10)
     
     nbins = Int(floor(nsample / expected_bin_count))
 
@@ -113,6 +113,6 @@ s = [simulate_chi2() for i in 1:200]
 histogram(s)
 
 # We observe some departure from the Chi Square distribution for numbers higher than 15 or so.
-qqplot(s, Chisq(9))
+qqplot(Chisq(9), s)
 xlabel!("quantiles for Chi Square distribution with 9 degrees of freedom")
-ylabel!("quantiles of simulated statistics")
+ylabel!("simulated data")
