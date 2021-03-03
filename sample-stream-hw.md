@@ -1,14 +1,26 @@
-Code style guidelines
+# code style guidelines
 
-Reading your code taught me new things about Julia, and made me think of better ways to write my own code.
+- Critique and improve code 
+
+
+
+Reading your code taught me new things about Julia, and helped me rewrite my code to improve it.
 Thanks!
 
 New test cases:
 
 - `seq 20 | sed "s/1/one/" | julia shuf.jl` shuffles non integer input lines
 - `seq 10 | julia shuf.jl 10` shuffles the integers from 1 to 10
-- `seq 11 | julia travis.jl 10` shuffles the integers from 1 to 11
+- `seq 11 | julia shuf.jl 10` shuffles the integers from 1 to 11
 - `time seq 1e9 | julia shuf.jl` shuffles the integers from 1 to 1 billion
+
+123 GO - What's one food that you cooked recently?
+
+
+## References
+
+- [Basics of the Unix Philosophy](https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html)
+- [Julia documentation](https://docs.julialang.org/)
 
 
 
@@ -45,12 +57,26 @@ catch
 end
 ```
 
-## Good Things
+## Quotes
 
-The fastest, most bug free code possible is the code you don't write.
+> Rule of Simplicity: Design for simplicity; add complexity only where you must.
 
-"I hate code, and want as little of it in my product as possible"
+- Eric Raymond
 
+
+> There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies.
+> The first method is far more difficult.
+
+- C.A.R. Hoare
+
+
+> I hate code, and I want as little of it as possible in our product.
+
+– Jack Diederich
+
+
+
+## Examples
 
 ------------------------------------------------------------
 
@@ -77,7 +103,7 @@ third!!!!
 ```
 
 
-## Ways to Improve
+------------------------------------------------------------
 
 
 DRY Don't repeat yourself.
@@ -91,32 +117,53 @@ else
 end  
 ```
 
+123 GO: What is unnecessarily repeated?
+
+There's still a bug here, and we can exercise it with this test:
+
+```
+$ seq 11 | julia shuf.jl 10
+1
+2
+3
+4
+11
+6
+7
+8
+9
+10
+```
+
+
+
 ------------------------------------------------------------
 
 Choose descriptive variable names.
 
-123 GO- what's your favorite?
-
 ```julia
-args = parse(Int64, ARGS[1])
+args = parse(Int, ARGS[1])
 
-k = parse(Int64, ARGS[1])
+k = parse(Int, ARGS[1])
+
+reservoir_size = parse(Int, ARGS[1])
 ```
 
+123 GO- what's your favorite?
 
 ------------------------------------------------------------
 
 Avoid global variables when possible.
-
-The way to avoid globals here is to wrap everything up in one function, see demo after class on Monday, Mar 1.
+The only global variables you have should be the functions that you define.
 
 ```julia
+global i = 0
 for line in eachline()
-    n = parse(Int64, line)
-
-    # ... do something with n
+    global i += 1
+    # ...
 ```
 
+The way to avoid globals here is to wrap everything up in one function, see demo after class on Monday, Mar 1.
 
 ------------------------------------------------------------
 
