@@ -19,6 +19,7 @@ New test cases:
 
 ## References
 
+- [The Zen of Python](https://www.python.org/dev/peps/pep-0020/)
 - [Basics of the Unix Philosophy](https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html)
 - [Julia documentation](https://docs.julialang.org/)
 
@@ -74,6 +75,16 @@ end
 
 – Jack Diederich
 
+
+> - Beautiful is better than ugly.
+> - Explicit is better than implicit.
+> - Simple is better than complex.
+> - Complex is better than complicated.
+> - Flat is better than nested.
+> - Sparse is better than dense.
+> - Readability counts.
+
+- Tim Peters, Zen of Python
 
 
 ## Examples
