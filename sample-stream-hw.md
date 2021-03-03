@@ -1,11 +1,15 @@
 # code style guidelines
 
-- Critique and improve code 
-
+- Critique and improve code by applying general engineering principles
 
 
 Reading your code taught me new things about Julia, and helped me rewrite my code to improve it.
 Thanks!
+
+Adopt a beginner / growth oriented mindset when you learn a new technology.
+
+
+## Announcements
 
 New test cases:
 
@@ -24,6 +28,7 @@ New test cases:
 - [Julia documentation](https://docs.julialang.org/)
 
 
+## Warm up
 
 Most did something like this to put a default for the command line argument:
 
@@ -38,43 +43,48 @@ end
 The general pattern is `if CONDITION`, where `CONDITION` was one of the following:
 
 ```julia
-isempty(ARGS)
-!isempty(ARGS)
-ARGS == []
-ARGS != []
-length(ARGS) != 0
-length(ARGS) == 0
-size(ARGS)[1] == 1
-length(ARGS) > 0 && length(ARGS[1]) > 0
+ARGS == []              1
+ARGS != []              2
+isempty(ARGS)           3
+!isempty(ARGS)          4
+length(ARGS) != 0       5
+length(ARGS) == 0       6
+size(ARGS)[1] == 1      7
+length(ARGS) > 0 && length(ARGS[1]) > 0     8
 ```
 
-A different approach is to try and catch the exception.
+123 GO: which is your favorite?
+
+A different approach is to try and then catch the exception.
 
 ```julia
 numRows = 100
 try
-    numRows = parse(Int, args[1])
+    numRows = parse(Int, ARGS[1])
 catch
 end
 ```
 
 ## Quotes
 
-> Rule of Simplicity: Design for simplicity; add complexity only where you must.
-
-- Eric Raymond
-
-
 > There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies.
 > The first method is far more difficult.
 
-- C.A.R. Hoare
+C.A.R. Hoare
 
+------------------------------------------------------------
+
+> Rule of Simplicity: Design for simplicity; add complexity only where you must.
+
+Eric Raymond
+
+------------------------------------------------------------
 
 > I hate code, and I want as little of it as possible in our product.
 
-– Jack Diederich
+Jack Diederich
 
+------------------------------------------------------------
 
 > - Beautiful is better than ugly.
 > - Explicit is better than implicit.
@@ -84,10 +94,14 @@ end
 > - Sparse is better than dense.
 > - Readability counts.
 
-- Tim Peters, Zen of Python
+Tim Peters
 
 
 ## Examples
+
+These examples are brief snippets of code illustrating broader ideas.
+They won't run without a little more context.
+I'd be happy to work them into self contained examples, just ask!
 
 ------------------------------------------------------------
 
@@ -96,21 +110,11 @@ Organize logic into small functions you can understand, test, and tinker with.
 This is the essence of programming.
 
 ```julia
+function main()
+    ... # implement reservoir sampling
+
+
 function shuf(data=stdin, size=parse(Int, ARGS[1]))
-```
-
-```
-julia> stream = IOBuffer("""first
-       second
-       third""")
-IOBuffer(data=UInt8[...], readable=true, writable=false, seekable=true, append=false, size=18, maxsize=Inf, ptr=1, mark=-1)
-
-julia> for line in eachline(stream)
-       println(line * "!!!!")
-       end
-first!!!!
-second!!!!
-third!!!!
 ```
 
 
@@ -146,7 +150,29 @@ $ seq 11 | julia shuf.jl 10
 10
 ```
 
+------------------------------------------------------------
 
+Stream (iterate) through the data for memory efficiency. 
+There's no reason to use reservoir sampling if the data fits in memory.
+
+```julia
+data = readlines()
+
+for line in eachline(stdin)
+    push!(stream,parse(Int64,line))
+end
+```
+
+------------------------------------------------------------
+
+More generally, assume as little as possible about your inputs.
+
+```julia
+for line in eachline()
+    n = parse(Int64, line)
+
+    # ... do something with n
+```
 
 ------------------------------------------------------------
 
@@ -178,31 +204,6 @@ The way to avoid globals here is to wrap everything up in one function, see demo
 
 ------------------------------------------------------------
 
-Assume as little as possible about your inputs.
-
-```julia
-for line in eachline()
-    n = parse(Int64, line)
-
-    # ... do something with n
-```
-
-------------------------------------------------------------
-
-An important special case: iteration 
-
-```julia
-for line in eachline(stdin)
-    push!(stream,parse(Int64,line))
-end
-
-# ... later ...
-
-selectKItems(stream,n,100)
-```
-
-------------------------------------------------------------
-
 Iterate directly over objects, avoiding explicit indexing (like `x[i]`) if possible.
 
 ```julia
@@ -228,7 +229,10 @@ for tup in enumerate(data)
 Format your code consistently.
 
 In particular, don't mix tabs and spaces.
+It's a programmer faux pas.
 
+```julia
     for element in reservoir
     println(element)
   end
+```
