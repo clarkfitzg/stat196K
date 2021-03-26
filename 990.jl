@@ -61,3 +61,6 @@ files2019 = readdir("2019irs990", join=true)
 d = map(extract_990, files2019)
 
 # Key commands: st (status), fr (frame), ` (enter Julia REPL)
+#
+# Process ALL the files:
+@time d = map(extract_990, files2019)

@@ -112,6 +112,17 @@ function getcontent4(xmlfile)
         d = findfirst("//Description/text()", doc)
     end
 
+    # Example:
+#    d = findall("//Desc/text()", doc)
+#
+#    if isempty(d)
+#        d = findall("//Description/text()", doc)
+#    end
+#    if isempty(d)
+#       # bail out, give up!
+#    end
+
+
     nodecontent(d)
 end
 
