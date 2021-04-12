@@ -9,7 +9,7 @@ using Distributions
 #using StatsBase
 
 plotly()
-sz = (1000, 800)
+SZ = (1000, 800)
 
 # Generate the same random numbers.
 Random.seed!(8390)
@@ -21,7 +21,7 @@ rv = Normal()
 n = 100
 x = rand(rv, n)
 y = x + 0.3 * rand(rv, n)
-scatter(x, y, legend = false, size = sz)
+scatter(x, y, legend = false, size = SZ)
 
 
 
@@ -45,7 +45,7 @@ p11 = projection(pca1)
 pc_space_xyt = transform(pca1, xyt)
 xyt_approximate = reconstruct(pca1, pc_space_xyt)
 
-scatter!(xyt_approximate[1, 1:end], xyt_approximate[2, 1:end], size = sz)
+scatter!(xyt_approximate[1, 1:end], xyt_approximate[2, 1:end], size = SZ)
 
 
 # We have a cigar shaped distribution
