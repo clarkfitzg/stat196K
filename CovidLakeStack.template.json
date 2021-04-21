@@ -81,7 +81,7 @@
             ],
             "Compressed": false,
             "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": "s3://covid19-lake/covidcast/json/data/",
+            "Location": "s3://stat196k-data-examples/covidcast/json/data/",
             "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
             "SerdeInfo": {
               "Parameters": {
@@ -170,7 +170,7 @@
             ],
             "Compressed": false,
             "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
-            "Location": "s3://covid19-lake/covidcast/json/metadata/",
+            "Location": "s3://stat196k-data-examples/covidcast/json/metadata/",
             "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
             "SerdeInfo": {
               "Parameters": {
