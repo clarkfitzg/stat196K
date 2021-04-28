@@ -64,9 +64,8 @@ Does it appear that there are around 20 million survey responses present in the 
 ## Open ended questions
 
 8 points
-
-Include the SQL and at least 1 plot in your answers to the following questions.
-It's sufficient to include a plot for either the first or second question.
+_Include the SQL and at least 1 plot in your answers to the following questions.
+It's sufficient to include a plot for either the first or second question._
 
 
 ### 1
@@ -81,3 +80,6 @@ Explain what the signal means, and use this signal to pose and answer a question
 
 Load an external table into your database and use it to ask and answer a new question by joining it with the existing tables.
 For example, we could look at the relationship between political backgrounds and COVID attitudes by finding a table with votes for each party by state or county for the 2020 presidential election.
+
+```sql
+```
