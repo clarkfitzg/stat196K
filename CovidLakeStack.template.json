@@ -1,0 +1,372 @@
+{
+  "Resources": {
+    "covid19AE266CCE": {
+      "Type": "AWS::Glue::Database",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseInput": {
+          "Name": "covid-19"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CovidLakeStack/covid-19/Resource"
+      }
+    },
+    "covidcastdatatable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "covid19AE266CCE"
+        },
+        "TableInput": {
+          "Description": "CMU Delphi's COVID-19 Surveillance Data",
+          "Name": "covidcast_data",
+          "Parameters": {
+            "has_encrypted_data": false,
+            "classification": "json",
+            "typeOfData": "file"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Comment": "name of upstream data source (e.g., fb-survey, google-survey, ght, quidel, doctor-visits)",
+                "Name": "data_source",
+                "Type": "string"
+              },
+              {
+                "Comment": "name of signal derived from upstream data",
+                "Name": "signal",
+                "Type": "string"
+              },
+              {
+                "Comment": "spatial resolution of the signal (e.g., county, hrr, msa, dma, state)",
+                "Name": "geo_type",
+                "Type": "string"
+              },
+              {
+                "Comment": "time unit (e.g., date) over which underlying events happened",
+                "Name": "time_value",
+                "Type": "int"
+              },
+              {
+                "Comment": "unique code for each location, depending on geo_type (county -> FIPS 6-4 code, HRR -> HRR number, MSA -> CBSA code, DMA -> DMA code, state -> two-letter state code), or * for all",
+                "Name": "geo_value",
+                "Type": "string"
+              },
+              {
+                "Comment": "trend classifier (+1 -> increasing, 0 steady or not determined, -1 -> decreasing)",
+                "Name": "direction",
+                "Type": "int"
+              },
+              {
+                "Comment": "value (statistic) derived from the underlying data source",
+                "Name": "value",
+                "Type": "double"
+              },
+              {
+                "Comment": "standard error of the statistic with respect to its sampling distribution",
+                "Name": "stderr",
+                "Type": "double"
+              },
+              {
+                "Comment": "number of data points used in computing the statistic",
+                "Name": "sample_size",
+                "Type": "double"
+              }
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "s3://stat196k-data-examples/covidcast/json/data/",
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "SerdeInfo": {
+              "Parameters": {
+                "paths": "data_source,direction,geo_type,geo_value,sample_size,signal,stderr,time_value,value"
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
+            },
+            "StoredAsSubDirectories": false
+          },
+          "TableType": "EXTERNAL_TABLE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CovidLakeStack/covidcast_data_table"
+      }
+    },
+    "covidcastmetatable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "covid19AE266CCE"
+        },
+        "TableInput": {
+          "Description": "CMU Delphi's COVID-19 Surveillance Metadata",
+          "Name": "covidcast_metadata",
+          "Parameters": {
+            "has_encrypted_data": false,
+            "classification": "json",
+            "typeOfData": "file"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Comment": "name of upstream data source (e.g., fb-survey, google-survey, ght, quidel, doctor-visits)",
+                "Name": "data_source",
+                "Type": "string"
+              },
+              {
+                "Comment": "name of signal derived from upstream data",
+                "Name": "signal",
+                "Type": "string"
+              },
+              {
+                "Comment": "temporal resolution of the signal (e.g., day, week)",
+                "Name": "time_type",
+                "Type": "string"
+              },
+              {
+                "Comment": "geographic resolution (e.g. county, hrr, msa, dma, state)",
+                "Name": "geo_type",
+                "Type": "string"
+              },
+              {
+                "Comment": "minimum time (e.g., 20200406)",
+                "Name": "min_time",
+                "Type": "int"
+              },
+              {
+                "Comment": "maximum time (e.g., 20200413)",
+                "Name": "max_time",
+                "Type": "int"
+              },
+              {
+                "Name": "num_locations",
+                "Type": "int"
+              },
+              {
+                "Name": "min_value",
+                "Type": "double"
+              },
+              {
+                "Name": "max_value",
+                "Type": "double"
+              },
+              {
+                "Name": "mean_value",
+                "Type": "double"
+              },
+              {
+                "Name": "stdev_value",
+                "Type": "double"
+              }
+            ],
+            "Compressed": false,
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "Location": "s3://stat196k-data-examples/covidcast/json/metadata/",
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "SerdeInfo": {
+              "Parameters": {
+                "paths": "data_source,geo_type,max_time,max_value,mean_value,min_time,min_value,num_locations,signal,stdev_value,time_type"
+              },
+              "SerializationLibrary": "org.openx.data.jsonserde.JsonSerDe"
+            },
+            "StoredAsSubDirectories": false
+          },
+          "TableType": "EXTERNAL_TABLE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CovidLakeStack/covidcast_meta_table"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Modules": "aws-cdk=1.63.0,@aws-cdk/aws-events=1.63.0,@aws-cdk/aws-glue=1.63.0,@aws-cdk/aws-iam=1.63.0,@aws-cdk/aws-kms=1.63.0,@aws-cdk/aws-s3=1.63.0,@aws-cdk/cloud-assembly-schema=1.63.0,@aws-cdk/core=1.63.0,@aws-cdk/cx-api=1.63.0,@aws-cdk/region-info=1.63.0,jsii-runtime=node.js/v12.14.0"
+      },
+      "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Conditions": {
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
