@@ -133,6 +133,15 @@ sizeof(s)
 s2 = sparse(s)
 
 sizeof(s2)
+# Can it be so small?
+
+Base.summarysize(s2)
+
+3*8*n
+
+
+# What other special matrices are there?
+# https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#Special-matrices
 
 
 # Side note:
