@@ -1,4 +1,19 @@
 
+Ground rules:
+
+- I encourage you to turn on your video, if possible.
+- Use the hand raising feature, and I'll call on you using a FIFO.
+- Please be respectful, and considerate.
+- If the conversation makes you uncomfortable and you need to leave, that's OK!
+
+------------------------------------------------------------
+
+- Usually, I just focus on the technical aspects of data.
+- On Monday, I got on Facebook for the first time in years and I downloaded my data.
+- Let's look at it!
+
+------------------------------------------------------------
+
 Discussion questions
 
 Tomorrow we're going to discuss the ethical considerations of big data.
@@ -9,6 +24,10 @@ Here are some questions for you to consider:
 
 1. Which organizations know what information about you?
     How do they use that information?
+        - facebook, google
+        - credit reporting bureaus
+        - background checks
+        - official state records
 2. What are examples of unethical uses of data?
     What safeguards do we have against the misuse and abuse of data?
 3. What data should the government and law enforcement be allowed to use?
@@ -19,7 +38,6 @@ Here
 
 Mon May 10 15:11:37 PDT 2021
 
-Got on Facebook (FB) for the first time in years.
 
 Here are my observations.
 
