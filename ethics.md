@@ -1,16 +1,35 @@
+Announcements:
+
+- expect to have final study guide available this afternoon
 
 Ground rules:
 
+- PG-13
 - I encourage you to turn on your video, if possible.
 - Use the hand raising feature, and I'll call on you using a FIFO.
 - Please be respectful, and considerate.
 - If the conversation makes you uncomfortable and you need to leave, that's OK!
+
+123 GO- What's your social media of choice?
 
 ------------------------------------------------------------
 
 - Usually, I just focus on the technical aspects of data.
 - On Monday, I got on Facebook for the first time in years and I downloaded my data.
 - Let's look at it!
+
+I feel data is an extremely powerful tool that can be leveraged for good or bad purposes.
+
+------------------------------------------------------------
+
+
+Notes from data feminism webinar
+
+- Data is the new oil.
+- Data is the same old oppression.
+- Timnit Gebru fired from Google in December https://en.wikipedia.org/wiki/Timnit_Gebru
+- What data should we have?
+    Who has the power to collect data? Governments and big organizations.
 
 ------------------------------------------------------------
 
@@ -24,13 +43,18 @@ Here are some questions for you to consider:
 
 1. Which organizations know what information about you?
     How do they use that information?
+2. What are examples of unethical uses of data?
+    What safeguards do we have against the misuse and abuse of data?
+3. What data should the government and law enforcement be allowed to use?
+
+
         - facebook, google
         - credit reporting bureaus
         - background checks
         - official state records
-2. What are examples of unethical uses of data?
-    What safeguards do we have against the misuse and abuse of data?
-3. What data should the government and law enforcement be allowed to use?
+
+
+Northrop Grumman job interview.
 
 I'll kick the discussion off, but then I hope to step back and moderate while you discuss.
 
